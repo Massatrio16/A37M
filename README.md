@@ -1,4 +1,3 @@
-TWRP device tree for Xiaomi Redmi 5 (rosy)
+TWRP device tree for Oppo A37M
 ========================================================
 
-For building TWRP for MSM8953 models only.
