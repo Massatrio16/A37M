@@ -1,31 +1,105 @@
-# Copyright (c) 2009-2012, 2014-2015, The Linux Foundation. All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of The Linux Foundation nor
-#       the names of its contributors may be used to endorse or promote
-#       products derived from this software without specific prior written
-#       permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 
+
+service mobicore /vendor/bin/mcDriverDaemon \
+	-r /system/app/mcRegistry/020b0000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/020b0000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/020f0000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/020f0000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/030b0000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/030b0000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/37b404db11db4fd4af5e846106b1c3d0.tlbin \
+	-r /system/app/mcRegistry/070b0000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/070b0000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/070c0000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/070c0000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/070c0000000000000000000000000001.drbin \
+	-r /system/app/mcRegistry/070c0000000000000000000000000001.tlbin \
+	-r /system/app/mcRegistry/98fb95bcb4bf42d26473eae48690d7ea.tlbin \
+	-r /system/app/mcRegistry/375dc3aa776811e38c992c27d744d66e.drbin \
+	-r /system/app/mcRegistry/375dc3aa776811e38c992c27d744d66e.tlbin \
+	-r /system/app/mcRegistry/9073f03a9618383bb1856eb3f990babd.drbin \
+	-r /system/app/mcRegistry/9073f03a9618383bb1856eb3f990babd.tlbin \
+	-r /system/app/mcRegistry/40188311faf343488db888ad39496f9a.drbin \
+	-r /system/app/mcRegistry/40188311faf343488db888ad39496f9a.tlbin \
+	-r /system/app/mcRegistry/0706000000000000000000000000004d.tlbin \
+	-r /system/app/mcRegistry/04010000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/04020000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/04020000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/05110000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/05120000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/05200000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/06090000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/06090000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/07010000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/07050000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/07050000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/07060000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/07060000000000000000000000007169.drbin \
+	-r /system/app/mcRegistry/07060000000000000000000000007169.tlbin \
+	-r /system/app/mcRegistry/07070000000000000000000000000000.drbin \
+	-r /system/app/mcRegistry/07070000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/07890000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/08010203000000000000000000000000.tabin \
+	-r /system/app/mcRegistry/08020000000000000000000000007169.tlbin \
+	-r /system/app/mcRegistry/08030000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/08090000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/08110000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/09010000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/09150000000000000000000000000000.tlbin \
+	-r /system/app/mcRegistry/e97c270ea5c44c58bcd3384a2fa2539e.tlbin 
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+    
+    
+on init
+    #create mountpoint for /mnt/vendor/persist partition
+    mkdir /mnt/vendor/persist 0771 system system
+
+on post-fs
+    chown system system /mnt/vendor/persist
+    chmod 0771 /mnt/vendor/persist
+
+    # We restorecon /mnt/vendor/persist to set SEPolicy label.
+    restorecon /mnt/vendor/persist
+
+    # Create mcRegistry to store failure record
+    mkdir /mnt/vendor/persist/mcRegistry 0771 system system
+    mkdir /mnt/vendor/persist/paytrigger
+    chown system system /mnt/vendor/persist/paytrigger
+    chmod 0777 /mnt/vendor/persist/paytrigger
+
+on post-fs-data
+    # Create /data/vendor/key_provisioning dir and get proper encryption policy installed
+    # Key Installation
+    mkdir /data/vendor/key_provisioning 0771 system system
+
+# For META/FACTORY mode
+on property:ro.crypto.state=unencrypted
+    write /proc/bootprof "MOBICORE: create /data/vendor/mcRegistry ++ (unencrypted)"
+    mkdir /data/vendor/mcRegistry 0775 system system
+    write /proc/bootprof "MOBICORE: create /data/vendor/mcRegistry -- (unencrypted)"
+
+# Normal mode, FBE
+on property:ro.crypto.type=file && property:ro.crypto.state=encrypted
+    write /proc/bootprof "MOBICORE: create /data/vendor/mcRegistry ++ (FBE encrypted)"
+    mkdir /data/vendor/mcRegistry 0775 system system
+    write /proc/bootprof "MOBICORE: create /data/vendor/mcRegistry -- (FBE encrypted)"
+
+# Normal mode, FDE
+on property:vold.decrypt=trigger_restart_framework
+    write /proc/bootprof "MOBICORE: create /data/vendor/mcRegistry ++ (FDE encrypted)"
+    mkdir /data/vendor/mcRegistry 0775 system system
+    
+    on late-fs
+    # Mount RW partitions which need run fsck
+    mount_all /fstab.mt6789 --late
 
 on property:ro.crypto.state=encrypted
-install keyring
+setprop crypto.ready 1
+#install keyring
+
+on boot
+start mobicore
     
