@@ -1,6 +1,11 @@
 
 DEVICE_PATH := device/oppo/A37M
 
+
+TW_HAS_RECOVERY_PARTITION := true
+
+
+
 # Architecture
 TARGET_BOARD_SUFFIX := _64
 
