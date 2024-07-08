@@ -94,7 +94,7 @@ on property:vold.decrypt=trigger_restart_framework
     
     on late-fs
     # Mount RW partitions which need run fsck
-    mount_all /fstab.mt6789 --late
+    mount_all /fstab.mt6755 --late
 
 on property:ro.crypto.state=encrypted
 setprop crypto.ready 1
