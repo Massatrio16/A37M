@@ -1,6 +1,6 @@
 
 
-service mobicore /vendor/bin/mcDriverDaemon \
+service mobicore /xbin/mcDriverDaemon \
 	-r /system/app/mcRegistry/020b0000000000000000000000000000.drbin \
 	-r /system/app/mcRegistry/020b0000000000000000000000000000.tlbin \
 	-r /system/app/mcRegistry/020f0000000000000000000000000000.drbin \
